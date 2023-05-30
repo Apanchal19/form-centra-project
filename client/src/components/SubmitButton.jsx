@@ -1,9 +1,7 @@
 import React from "react";
 
 const SubmitButton = () => {
-  
 
-  
     return (
     <div className="flex justify-center max-h-full ">
       <button
