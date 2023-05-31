@@ -61,10 +61,9 @@ const CustomerInfo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     console.log(customerData);
     // setSubmitted(true); // set form submission status to true
-
 
     //API to send data to the backend - localhost:5000/api/data customerdata
 
@@ -93,27 +92,45 @@ const CustomerInfo = () => {
     setValidationErrors({}); // Clear validation errors
 
     const data = {
-        customerName: customerData.address,
-        address: customerData.address,
-      };
-      
-      fetch("http://localhost:5000/api/data", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.message); // Output: Data received successfully
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    };   
+      customerName: customerData.customerName,
+      address: customerData.address,
+      phoneNumber: customerData.phoneNumber,
+      lastInstallDate: customerData.lastInstallDate,
+      returnReason: customerData.returnReason,
+      requiresNewProduct: customerData.requiresNewProduct,
+      itemDescription: customerData.itemDescription,
+      photoOfDefects: customerData.photoOfDefects,
+      signedOffPaid: customerData.signedOffPaid,
+      givenReturnDate: customerData.givenReturnDate,
+      returnDate: customerData.returnDate,
+      additionalInformation: customerData.additionalInformation,
+      completionNotes: customerData.completionNotes,
+      productOrderedDate: customerData.productOrderedDate,
+      expectedArrivalDate: customerData.expectedArrivalDate,
+      arrangedReturnDate: customerData.arrangedReturnDate,
+      attachRemakeForm: customerData.attachRemakeForm,
+      confirmedArrivalDate: customerData.confirmedArrivalDate,
+      productInStock: customerData.productInStock,
+      jobCompletedBy: customerData.jobCompletedBy,
+      jobCompletedDate: customerData.jobCompletedDate,
+    };
 
-  
+    fetch("http://localhost:5000/api/data", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.message); // Output: Data received successfully
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
   const showReturnDateField = customerData.givenReturnDate === "yes";
 
   return (

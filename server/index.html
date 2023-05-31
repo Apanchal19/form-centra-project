@@ -3,10 +3,12 @@
 
 <head>
     <style>
+        /* CSS styles */
+        
         .container {
             display: flex;
             justify-content: center;
-            padding: 0 300px;
+            padding: 0 100px;
         }
         
         table {
@@ -46,56 +48,53 @@
     </style>
 </head>
 
-<body>
-    <h3 style="padding-left: 300px;">Return trip checklist</h3>
-    <div class="container">
+<body style="font-family: Sans-Serif;">
+    <h3 style="padding-left: 100px;">Return trip checklist</h3>
+    <div class="container" style="display: flex; justify-content: center; padding: 0 100px;">
 
-        <table>
+        <table style="width: 100%; border-collapse: collapse;">
             <tr>
-                <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin;">Customer Info
-                </th>
+                <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; background-color: #005cba; color: white; text-align: left;">Customer Info</th>
             </tr>
             <tr>
-                <th class="column">Customer Name:</th>
-                <th class="column">Does this return trip require new product?
-                </th>
+                <th class="column" style="width: 50%; text-align: left;">Customer Name:</th>
+                <th class="column" style="width: 50%; text-align: left;">Does this return trip require new product?</th>
             </tr>
             <tr>
-                <td>Akshay</td>
-                <td>Yes</td>
+                <td>{customerName}</td>
+                <td>{requiresNewProduct}</td>
             </tr>
             <tr>
-                <th class="column">Address</th>
-                <th class="column">Item #'s & Description</th>
+                <th class="column" style="width: 50%; text-align: left;">Address</th>
+                <th class="column" style="width: 50%; text-align: left;">Item #'s &amp; Description</th>
             </tr>
             <tr>
-                <td>John</td>
-                <td>No</td>
+                <td>{address}</td>
+                <td>{itemDescription}</td>
             </tr>
             <tr>
-                <th class="column">Phone Number</th>
-                <th class="column">Photo of defects required for remakes. Complete?
-                </th>
+                <th class="column" style="width: 50%; text-align: left;">Phone Number</th>
+                <th class="column" style="width: 50%; text-align: left;">Photo of defects required for remakes. Complete?</th>
             </tr>
             <tr>
-                <td>John</td>
-                <td>No</td>
+                <td>{phoneNumber}</td>
+                <td>{photoOfDefects}</td>
             </tr>
             <tr>
-                <th class="column">Last Install Date:</th>
-                <th class="column">Has the customer signed off/paid for job?</th>
+                <th class="column" style="width: 50%; text-align: left;">Last Install Date:</th>
+                <th class="column" style="width: 50%; text-align: left;">Has the customer signed off/paid for job?</th>
             </tr>
             <tr>
-                <td>John</td>
-                <td>No</td>
+                <td>{lastInstallDate}</td>
+                <td>{signedOffPaid}</td>
             </tr>
             <tr>
-                <th class="column">Reason for return trip:</th>
-                <th class="column">Have you given them a return date?</th>
+                <th class="column" style="width: 50%; text-align: left;">Reason for return trip:</th>
+                <th class="column" style="width: 50%; text-align: left;">Have you given them a return date?</th>
             </tr>
             <tr>
-                <td>John</td>
-                <td>No</td>
+                <td>{returnReason}</td>
+                <td>{givenReturnDate}</td>
             </tr>
             <tr>
                 <td style="background-color: white;"></td>
@@ -103,17 +102,15 @@
             </tr>
             <div>
                 <tr>
-                    <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; padding-top: 10px;">Additional Information
-                    </th>
+                    <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; padding-top: 10px; background-color: #005cba; color: white; text-align: left;">Additional Information</th>
                 </tr>
                 <tr>
-                    <th class="column">Additional Instructions for Installer:
-                    </th>
-                    <th class="column">Completion Notes if needed</th>
+                    <th class="column" style="width: 50%; text-align: left;">Additional Instructions for Installer:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Completion Notes if needed</th>
                 </tr>
                 <tr>
-                    <td>Akshay</td>
-                    <td>Yes</td>
+                    <td>{additionalInformation}</td>
+                    <td>{completionNotes}</td>
                 </tr>
             </div>
             <tr>
@@ -122,39 +119,39 @@
             </tr>
             <div>
                 <tr>
-                    <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin;  ">Admin To Complete</th>
+                    <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; background-color: #005cba; color: white; text-align: left;">Admin To Complete</th>
                 </tr>
                 <tr>
-                    <th class="column">Product Ordered Date:</th>
-                    <th class="column">Confirmed Arrival Date:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Product Ordered Date:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Confirmed Arrival Date:</th>
                 </tr>
                 <tr>
-                    <td>Akshay</td>
-                    <td>Yes</td>
+                    <td>{productOrderedDate}</td>
+                    <td>{confirmedArrivalDate}</td>
                 </tr>
                 <tr>
-                    <th class="column">Expected Arrival Date:</th>
-                    <th class="column">Product in Stock:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Expected Arrival Date:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Product in Stock:</th>
                 </tr>
                 <tr>
-                    <td>John</td>
-                    <td>No</td>
+                    <td>{expectedArrivalDate}</td>
+                    <td>{productInStock}</td>
                 </tr>
                 <tr>
-                    <th class="column">Arranged Return Date:</th>
-                    <th class="column">Job Completed By:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Arranged Return Date:</th>
+                    <th class="column" style="width: 50%; text-align: left;">Job Completed By:</th>
                 </tr>
                 <tr>
-                    <td>John</td>
-                    <td>No</td>
+                    <td>{arrangedReturnDate}</td>
+                    <td>{jobCompletedBy}</td>
                 </tr>
                 <tr>
-                    <th class="column">Attach Remake Form</th>
-                    <th class="column">Job Completed Date</th>
+                    <th class="column" style="width: 50%; text-align: left;">Attach Remake Form</th>
+                    <th class="column" style="width: 50%; text-align: left;">Job Completed Date</th>
                 </tr>
                 <tr>
-                    <td>John</td>
-                    <td>No</td>
+                    <td>{attachRemakeForm}</td>
+                    <td>{jobCompletedDate}</td>
                 </tr>
                 <tr>
                     <td style="background-color: white;"></td>
