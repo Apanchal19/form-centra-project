@@ -1,17 +1,11 @@
-import './App.css';
-import CustomerInfo from './components/CustomerInfo';
+import "./App.css";
+import CustomerInfo from "./components/CustomerInfo";
 
 function App() {
   return (
-    <div >
-    
+    <div>
       <CustomerInfo />
-      
-      
-      
-      
     </div>
-    
   );
 }
 

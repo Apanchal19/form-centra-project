@@ -61,9 +61,12 @@ const CustomerInfo = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // onCustomerInfo(customerData);
+    
     console.log(customerData);
-    setSubmitted(true); // set form submission status to true
+    // setSubmitted(true); // set form submission status to true
+
+
+    //API to send data to the backend - localhost:5000/api/data customerdata
 
     const errors = {};
     let hasErrors = false;
@@ -83,16 +86,39 @@ const CustomerInfo = () => {
       return;
     }
 
-    // onCustomerInfo(customerData); // Call the form submission handler
-    setCustomerData(customerData); // Reset form fields
-    setValidationErrors({}); // Clear validation errors
-  };
+    setSubmitted(true);
 
+    // onCustomerInfo(customerData); // Call the form submission handler
+    // setCustomerData(customerData); // Reset form fields
+    setValidationErrors({}); // Clear validation errors
+
+    const data = {
+        customerName: customerData.address,
+        address: customerData.address,
+      };
+      
+      fetch("http://localhost:5000/api/data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.message); // Output: Data received successfully
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    };   
+
+  
   const showReturnDateField = customerData.givenReturnDate === "yes";
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div>
           <div>
             <h1 className="text-xl mt-5 mb-5 px-5">Return Trip Checklist</h1>
@@ -425,6 +451,8 @@ const CustomerInfo = () => {
                         id="additionalInformation"
                         className="w-full border border-gray-300 rounded p-2 text-sm"
                         placeholder="Enter Additional Instructions"
+                        value={customerData.additionalInformation}
+                        onChange={handleChange}
                       ></input>
                     </div>
                   </div>
@@ -439,6 +467,8 @@ const CustomerInfo = () => {
                         id="completionNotes"
                         className="w-full border border-gray-300 rounded p-2 text-sm"
                         placeholder="Enter Notes"
+                        value={customerData.completionNotes}
+                        onChange={handleChange}
                       ></input>
                     </div>
                   </div>
