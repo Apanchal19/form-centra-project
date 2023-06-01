@@ -8,6 +8,9 @@ const mailgunTransport = require('nodemailer-mailgun-transport');
 // Create an instance of Express
 const app = express();
 
+
+//password : dmpxezvksndsdaqa
+
 // Middleware for parsing JSON data
 app.use(bodyParser.json());
 app.use(express.json());
@@ -152,6 +155,16 @@ app.post("/api/data", async(req, res) => {
 
         // Close the browser instance
         await browser.close();
+
+
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: "akshaypanchal2023@gmail.com",
+                pass: "dmpxezvksndsdaqa"
+            }
+        });
+
 
         const mailOptions = {
             from: 'akshaypanchal2023@gmail.com',

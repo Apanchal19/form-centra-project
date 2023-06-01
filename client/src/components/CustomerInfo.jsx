@@ -58,10 +58,13 @@ const CustomerInfo = () => {
       [id]: value,
     }));
   };
+  // console.log()
+
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    
     console.log(customerData);
     // setSubmitted(true); // set form submission status to true
 
@@ -82,8 +85,21 @@ const CustomerInfo = () => {
 
     if (hasErrors) {
       setValidationErrors(errors);
+      // console.log(errors);
       return;
     }
+    
+    if (customerData.givenReturnDate === "yes" && customerData.returnDate) {
+      if (!customerData.additionalInformation) {
+        // If additionalInformation is empty, set it to a default value or an appropriate message
+        customerData.additionalInformation = "";
+      }
+      if (!customerData.completionNotes) {
+        // If completionNotes is empty, set it to a default value or an appropriate message
+        customerData.completionNotes = "";
+      }
+    }
+
 
     setSubmitted(true);
 
@@ -727,6 +743,7 @@ const CustomerInfo = () => {
             Submit
           </button>
         </div> */}
+            
             <div className="flex justify-center max-h-full">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-lg py-2 px-4 rounded h-12 mt-4 mb-8 cursor-pointer w-36"
