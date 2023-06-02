@@ -94,12 +94,20 @@
             </tr>
             <tr>
                 <td>{returnReason}</td>
-                <td>{givenReturnDate}-{returnDate}</td>
+                <td>{givenReturnDate}</td>
             </tr>
             <tr>
-                <td style="background-color: white;"></td>
-                <td style="background-color: white;"></td>
+                <th class="column" style="width: 50%; text-align: left;"></th>
+                <th class="column" style="width: 50%; text-align: left;">Date:{returnDate}</th>
             </tr>
+            <tr>
+                <td></td>
+                <td>{returnDate}</td>
+            </tr>
+            <!-- <tr>
+                <td style="background-color: white;"></td>
+                <td style="background-color: white;"></td>
+            </tr> -->
             <div>
                 <tr>
                     <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; padding-top: 10px; background-color: #005cba; color: white; text-align: left;">Additional Information</th>
@@ -112,12 +120,12 @@
                     <td>{additionalInformation}</td>
                     <td>{completionNotes}</td>
                 </tr>
-            </div>
-            <tr>
+
+                <!-- <tr>
                 <td style="background-color: white;"></td>
                 <td style="background-color: white;"></td>
-            </tr>
-            <div>
+            </tr> -->
+
                 <tr>
                     <th colspan="2" class="customer-info" style="border: #6b9fd3; border-width: thin; background-color: #005cba; color: white; text-align: left;">Admin To Complete</th>
                 </tr>
@@ -159,11 +167,11 @@
                 <tr>
                     <td style="background-color: white;"></td>
                 </tr>
-            </div>
+
 
         </table>
 
-    </div>
+        </div>
 </body>
 
 </html>

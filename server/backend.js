@@ -20,18 +20,85 @@ app.use(
     })
 );
 
-const transporter = nodemailer.createTransport(
-    mailgunTransport({
-        auth: {
-            api_key: 'fa792297aedfc7990fe5fc0950e58b85-5d9bd83c-7fe09069',
-            domain: 'sandbox79ff3d243e9f4729a412194f8f5ba012.mailgun.org',
-        },
-    })
-);
+// const transporter = nodemailer.createTransport(
+//     mailgunTransport({
+//         auth: {
+//             api_key: 'fa792297aedfc7990fe5fc0950e58b85-5d9bd83c-7fe09069',
+//             domain: 'sandbox79ff3d243e9f4729a412194f8f5ba012.mailgun.org',
+//         },
+//     })
+// );
+
+// Validation function for checking if a field is empty
+const validateRequiredField = (field, fieldName) => {
+    if (!field) {
+        throw new Error(`The '${fieldName}' field is required.`);
+    }
+};
+
+// Validation middleware function
+const validateData = (req, res, next) => {
+    try {
+        const {
+            customerName,
+            address,
+            phoneNumber,
+            lastInstallDate,
+            returnReason,
+            requiresNewProduct,
+            itemDescription,
+            photoOfDefects,
+            signedOffPaid,
+            givenReturnDate,
+            returnDate,
+            additionalInformation,
+            completionNotes,
+            productOrderedDate,
+            expectedArrivalDate,
+            arrangedReturnDate,
+            attachRemakeForm,
+            confirmedArrivalDate,
+            productInStock,
+            jobCompletedBy,
+            jobCompletedDate,
+
+        } = req.body;
+
+        // Validate required fields
+        validateRequiredField(customerName, "Customer Name");
+        validateRequiredField(address, "Address");
+        validateRequiredField(phoneNumber, "Phone Number");
+        validateRequiredField(lastInstallDate, "lastInstallDate");
+        validateRequiredField(returnReason, "returnReason");
+        validateRequiredField(requiresNewProduct, "requiresNewProduct");
+        validateRequiredField(itemDescription, "itemDescription");
+        validateRequiredField(photoOfDefects, "photoOfDefects");
+        validateRequiredField(signedOffPaid, "signedOffPaid");
+        validateRequiredField(givenReturnDate, "givenReturnDate");
+        // validateRequiredField(returnDate, "returnDate");
+        // validateRequiredField(additionalInformation, "additionalInformation");
+        // validateRequiredField(completionNotes, "completionNotes");
+        validateRequiredField(productOrderedDate, "productOrderedDate");
+        validateRequiredField(expectedArrivalDate, "expectedArrivalDate");
+        validateRequiredField(arrangedReturnDate, "arrangedReturnDate");
+        validateRequiredField(attachRemakeForm, "attachRemakeForm");
+        validateRequiredField(confirmedArrivalDate, "confirmedArrivalDate");
+        validateRequiredField(productInStock, "productInStock");
+        validateRequiredField(jobCompletedBy, "jobCompletedBy");
+        validateRequiredField(jobCompletedDate, "jobCompletedDate");
+
+        // If all validations pass, proceed to the next middleware
+        next();
+    } catch (error) {
+        // Return a response with the validation error message
+        res.status(400).json({ error: error.message });
+    }
+};
+
 
 
 // Endpoint to handle the POST request and generate PDF
-app.post("/api/data", async(req, res) => {
+app.post("/api/data", validateData, async(req, res) => {
     try {
         const {
             customerName,
@@ -117,7 +184,7 @@ app.post("/api/data", async(req, res) => {
         const page = await browser.newPage();
 
         // Set the viewport size
-        await page.setViewport({ width: 2500, height: 800 });
+        await page.setViewport({ width: 2500, height: 500 });
 
         // Set the HTML content of the page
         await page.setContent(replacedHtml, { waitUntil: "networkidle0" });

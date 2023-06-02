@@ -49,33 +49,40 @@ const CustomerInfo = () => {
     jobCompletedDate: false,
   });
 
+  //UseState for submitted
   const [submitted, setSubmitted] = useState(false);
 
+  //handleChange event function
   const handleChange = (e) => {
     const { id, value } = e.target;
+
+    // Clear validation error for the changed field
+    setValidationErrors((prevErrors) => ({
+      ...prevErrors,
+      [id]: false,
+    }));
+
     setCustomerData((prevData) => ({
       ...prevData,
       [id]: value,
     }));
   };
-  // console.log()
 
-
-
+  //HandleSubmit funciton
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     console.log(customerData);
     // setSubmitted(true); // set form submission status to true
-
-    //API to send data to the backend - localhost:5000/api/data customerdata
 
     const errors = {};
     let hasErrors = false;
 
     // Check for validation errors
     Object.keys(customerData).forEach((key) => {
-      if (customerData[key].trim() === "") {
+      if (key === "additionalInformation" || key === "completionNotes") {
+        errors[key] = false; // Allow empty values for these fields
+      } else if (customerData[key].trim() === "") {
         errors[key] = true;
         hasErrors = true;
       } else {
@@ -83,30 +90,55 @@ const CustomerInfo = () => {
       }
     });
 
+    // Conditionally set validation error for "returnDate"
+    if (
+      customerData.givenReturnDate === "no" &&
+      customerData.returnDate.trim() === ""
+    ) {
+      errors.returnDate = false;
+      hasErrors = false;
+    } else {
+      errors.returnDate = false;
+    }
+
     if (hasErrors) {
       setValidationErrors(errors);
       // console.log(errors);
+      // console.log(hasErrors);
       return;
     }
-    
-    if (customerData.givenReturnDate === "yes" && customerData.returnDate) {
-      if (!customerData.additionalInformation) {
-        // If additionalInformation is empty, set it to a default value or an appropriate message
-        customerData.additionalInformation = "";
-      }
-      if (!customerData.completionNotes) {
-        // If completionNotes is empty, set it to a default value or an appropriate message
-        customerData.completionNotes = "";
-      }
-    }
-
-
-    setSubmitted(true);
+    // Reset form fields and set the submitted state to true
+    setCustomerData({
+      customerName: "",
+      address: "",
+      phoneNumber: "",
+      lastInstallDate: "",
+      returnReason: "",
+      requiresNewProduct: "",
+      itemDescription: "",
+      photoOfDefects: "",
+      signedOffPaid: "",
+      givenReturnDate: "",
+      returnDate: "",
+      additionalInformation: "",
+      completionNotes: "",
+      productOrderedDate: "",
+      expectedArrivalDate: "",
+      arrangedReturnDate: "",
+      attachRemakeForm: "",
+      confirmedArrivalDate: "",
+      productInStock: "",
+      jobCompletedBy: "",
+      jobCompletedDate: "",
+    });
+    setValidationErrors({});
+    // setSubmitted(true);
 
     // onCustomerInfo(customerData); // Call the form submission handler
     // setCustomerData(customerData); // Reset form fields
-    setValidationErrors({}); // Clear validation errors
+    // Clear validation errors
 
+    //API to send data to the backend - localhost:5000/api/data customerdata
     const data = {
       customerName: customerData.customerName,
       address: customerData.address,
@@ -140,7 +172,8 @@ const CustomerInfo = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.message); // Output: Data received successfully
+        console.log(data.message);
+        setSubmitted(true); // Output: Data received successfully
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -727,11 +760,14 @@ const CustomerInfo = () => {
                   </div>
                 </div>
               </div>
-              {submitted && (
+              {/* {submitted && (
                 <p className="flex justify-center max-h-8 mt-4 text-lg text text-red-600">
                   Form submitted successfully!
                 </p>
-              )}
+              )} */}
+              {submitted ? (
+                <p className="flex justify-center max-h-8 mt-4 text-lg text text-red-600">Form submitted successfully!</p>
+              ) : null}
             </div>
 
             {/* <div className="flex justify-center max-h-full ">
@@ -743,7 +779,7 @@ const CustomerInfo = () => {
             Submit
           </button>
         </div> */}
-            
+
             <div className="flex justify-center max-h-full">
               <button
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold text-lg py-2 px-4 rounded h-12 mt-4 mb-8 cursor-pointer w-36"
