@@ -4,10 +4,9 @@ const cors = require("cors");
 const fs = require("fs");
 const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
-const mailgunTransport = require('nodemailer-mailgun-transport');
+
 // Create an instance of Express
 const app = express();
-
 
 //password : dmpxezvksndsdaqa
 
@@ -20,15 +19,6 @@ app.use(
     })
 );
 
-// const transporter = nodemailer.createTransport(
-//     mailgunTransport({
-//         auth: {
-//             api_key: 'fa792297aedfc7990fe5fc0950e58b85-5d9bd83c-7fe09069',
-//             domain: 'sandbox79ff3d243e9f4729a412194f8f5ba012.mailgun.org',
-//         },
-//     })
-// );
-
 // Validation function for checking if a field is empty
 const validateRequiredField = (field, fieldName) => {
     if (!field) {
@@ -40,6 +30,7 @@ const validateRequiredField = (field, fieldName) => {
 const validateData = (req, res, next) => {
     try {
         const {
+            WorkNo,
             customerName,
             address,
             phoneNumber,
@@ -61,10 +52,10 @@ const validateData = (req, res, next) => {
             productInStock,
             jobCompletedBy,
             jobCompletedDate,
-
         } = req.body;
 
         // Validate required fields
+        validateRequiredField(WorkNo, "Work No");
         validateRequiredField(customerName, "Customer Name");
         validateRequiredField(address, "Address");
         validateRequiredField(phoneNumber, "Phone Number");
@@ -95,12 +86,11 @@ const validateData = (req, res, next) => {
     }
 };
 
-
-
 // Endpoint to handle the POST request and generate PDF
 app.post("/api/data", validateData, async(req, res) => {
     try {
         const {
+            WorkNo,
             customerName,
             address,
             phoneNumber,
@@ -124,6 +114,7 @@ app.post("/api/data", validateData, async(req, res) => {
             jobCompletedDate,
         } = req.body;
 
+        console.log(WorkNo); // Print WorkNo to the console
         console.log(customerName); // Print customerName to the console
         console.log(address); // Print address to the console
         console.log(phoneNumber);
@@ -151,8 +142,33 @@ app.post("/api/data", validateData, async(req, res) => {
         // Load the HTML template file
         const htmlTemplate = fs.readFileSync("../server/index.html", "utf-8");
 
+        // // Create an object to store the dynamic values
+        // const dynamicValues = {};
+
+        // // Check if returnDate has data and add it to dynamicValues
+        // if (returnDate) {
+        //     dynamicValues.returnDate = returnDate;
+        // }
+
+        // // Check if additionalInformation has data and add it to dynamicValues
+        // if (additionalInformation) {
+        //     dynamicValues.additionalInformation = additionalInformation;
+        // }
+
+        // // Check if completionNotes has data and add it to dynamicValues
+        // if (completionNotes) {
+        //     dynamicValues.completionNotes = completionNotes;
+        // }
+
+        // // Replace dynamic values in the HTML template
+        // let replacedHtml = htmlTemplate;
+        // for (const key in dynamicValues) {
+        //     replacedHtml = replacedHtml.replace(`{${key}}`, dynamicValues[key]);
+        // }
+
         // Replace dynamic values in the HTML template
         const replacedHtml = htmlTemplate
+            .replace("{WorkNo}", WorkNo)
             .replace("{customerName}", customerName)
             .replace("{address}", address)
             .replace("{phoneNumber}", phoneNumber)
@@ -163,9 +179,9 @@ app.post("/api/data", validateData, async(req, res) => {
             .replace("{photoOfDefects}", photoOfDefects)
             .replace("{signedOffPaid}", signedOffPaid)
             .replace("{givenReturnDate}", givenReturnDate)
-            .replace("{returnDate}", returnDate)
-            .replace("{additionalInformation}", additionalInformation)
-            .replace("{completionNotes}", completionNotes)
+            .replace("{returnDate}", returnDate ? returnDate : "NA")
+            .replace("{additionalInformation}", additionalInformation ? additionalInformation : "NA")
+            .replace("{completionNotes}", completionNotes ? completionNotes : "NA")
             .replace("{productOrderedDate}", productOrderedDate)
             .replace("{expectedArrivalDate}", expectedArrivalDate)
             .replace("{arrangedReturnDate}", arrangedReturnDate)
@@ -196,19 +212,17 @@ app.post("/api/data", validateData, async(req, res) => {
         // const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
 
         async function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+            return new Promise((resolve) => setTimeout(resolve, ms));
         }
 
         // Wait for the page to finish loading and rendering
         // await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 0 });
-
 
         // Wait for an additional delay to ensure the page is fully rendered
         await delay(2000);
 
         // Generate the PDF with the styles
         const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
-
 
         // Define the file path to save the PDF
         const filePath = "./return_trip_checklist.pdf";
@@ -223,37 +237,34 @@ app.post("/api/data", validateData, async(req, res) => {
         // Close the browser instance
         await browser.close();
 
-
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
                 user: "akshaypanchal2023@gmail.com",
-                pass: "dmpxezvksndsdaqa"
-            }
+                pass: "dmpxezvksndsdaqa",
+            },
         });
 
-
         const mailOptions = {
-            from: 'akshaypanchal2023@gmail.com',
-            to: 'alan19walker1997@gmail.com',
-            subject: `W/O# {W/O# value} - Return Trip Checklist`,
-            text: 'All fields from the form',
+            from: "akshaypanchal2023@gmail.com",
+            to: "alan19walker1997@gmail.com",
+            subject: `W/O# ${WorkNo} - Return Trip Checklist`,
+            text: "All fields from the form",
             attachments: [{
-                filename: 'return_trip_checklist.pdf',
+                filename: "return_trip_checklist.pdf",
                 path: filePath,
             }, ],
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.error('Error sending email:', error);
-                res.status(500).json({ error: 'Error sending email' });
+                console.error("Error sending email:", error);
+                res.status(500).json({ error: "Error sending email" });
             } else {
-                console.log('Email sent successfully');
+                console.log("Email sent successfully");
                 // res.json({ message: 'Email sent successfully' });
             }
         });
-
     } catch (error) {
         console.error("Error generating PDF:", error);
         res.status(500).json({ error: "Error generating PDF" });

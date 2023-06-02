@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const CustomerInfo = () => {
   const [customerData, setCustomerData] = useState({
+    WorkNo: "",
     customerName: "",
     address: "",
     phoneNumber: "",
@@ -26,6 +27,7 @@ const CustomerInfo = () => {
   });
 
   const [validationErrors, setValidationErrors] = useState({
+    WorkNo: false,
     customerName: false,
     address: false,
     phoneNumber: false,
@@ -80,9 +82,9 @@ const CustomerInfo = () => {
 
     // Check for validation errors
     Object.keys(customerData).forEach((key) => {
-      if (key === "additionalInformation" || key === "completionNotes") {
+      if (key === "additionalInformation" || key === "completionNotes" || key === "returnDate") {
         errors[key] = false; // Allow empty values for these fields
-      } else if (customerData[key].trim() === "") {
+      } else if (customerData[key].trim() === "" || customerData[key].trim().length === 0) {
         errors[key] = true;
         hasErrors = true;
       } else {
@@ -92,11 +94,11 @@ const CustomerInfo = () => {
 
     // Conditionally set validation error for "returnDate"
     if (
-      customerData.givenReturnDate === "no" &&
+      customerData.givenReturnDate === "Yes" &&
       customerData.returnDate.trim() === ""
     ) {
-      errors.returnDate = false;
-      hasErrors = false;
+      errors.returnDate = true;
+      hasErrors = true;
     } else {
       errors.returnDate = false;
     }
@@ -109,6 +111,7 @@ const CustomerInfo = () => {
     }
     // Reset form fields and set the submitted state to true
     setCustomerData({
+      WorkNo: "",
       customerName: "",
       address: "",
       phoneNumber: "",
@@ -140,6 +143,7 @@ const CustomerInfo = () => {
 
     //API to send data to the backend - localhost:5000/api/data customerdata
     const data = {
+      WorkNo: customerData.WorkNo,
       customerName: customerData.customerName,
       address: customerData.address,
       phoneNumber: customerData.phoneNumber,
@@ -180,7 +184,7 @@ const CustomerInfo = () => {
       });
   };
 
-  const showReturnDateField = customerData.givenReturnDate === "yes";
+  const showReturnDateField = customerData.givenReturnDate === "Yes";
 
   return (
     <div>
@@ -195,8 +199,38 @@ const CustomerInfo = () => {
               Customer Info
             </h2>
 
+            
             <div className="grid grid-cols-2 gap-3 px-2">
               <div>
+              <div className="mb-4">
+                  <label htmlFor="WorkNo" className="font-bold">
+                    Work No:
+                  </label>
+                  <input
+                    type="textarea"
+                    id="WorkNo"
+                    className={`w-full border ${
+                      validationErrors.WorkNo
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } rounded p-2 text-sm`}
+                    placeholder="Enter Work No"
+                    value={customerData.WorkNo}
+                    onChange={handleChange}
+                    required
+
+                    // value={returnReason}
+                    // onChange={(e) => setReturnReason(e.target.value)}
+                  />
+                  {validationErrors.WorkNo && (
+                    <p className="text-red-500 text-xs mt-1">
+                      Field is required
+                    </p>
+                  )}
+                </div>
+                
+                
+                
                 <div className="mb-4">
                   <label htmlFor="customerName" className="font-bold">
                     Customer Name:
@@ -344,8 +378,8 @@ const CustomerInfo = () => {
                     // onChange={(e) => setRequiresNewProduct(e.target.value)}
                   >
                     <option value="">Select an option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                   {validationErrors.requiresNewProduct && (
                     <p className="text-red-500 text-xs mt-1">
@@ -400,8 +434,8 @@ const CustomerInfo = () => {
                     // onChange={(e) => setPhotoOfDefects(e.target.value)}
                   >
                     <option value="">Select an option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                   {validationErrors.photoOfDefects && (
                     <p className="text-red-500 text-xs mt-1">
@@ -429,8 +463,8 @@ const CustomerInfo = () => {
                     // onChange={(e) => setSignedOffPaid(e.target.value)}
                   >
                     <option value="">Select an option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                   {validationErrors.signedOffPaid && (
                     <p className="text-red-500 text-xs mt-1">
@@ -458,8 +492,8 @@ const CustomerInfo = () => {
                     // onChange={(e) => setGivenReturnDate(e.target.value)}
                   >
                     <option value="">Select an option</option>
-                    <option value="yes">Yes</option>
-                    <option value="no">No</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
                   </select>
                   {validationErrors.givenReturnDate && (
                     <p className="text-red-500 text-xs mt-1">
@@ -468,11 +502,13 @@ const CustomerInfo = () => {
                   )}
                 </div>
 
+                
+
                 {/* Show the "Date" field if 'Yes' is selected */}
                 {showReturnDateField && (
                   <div className="mb-4">
                     <label htmlFor="returnDate" className="font-bold">
-                      Date:
+                      Return Date:
                     </label>
                     <input
                       type="date"
@@ -641,8 +677,8 @@ const CustomerInfo = () => {
                         onChange={handleChange}
                       >
                         <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
                       </select>
                       {validationErrors.attachRemakeForm && (
                         <p className="text-red-500 text-xs mt-1">
@@ -672,8 +708,8 @@ const CustomerInfo = () => {
                         onChange={handleChange}
                       >
                         <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
                       </select>
                       {validationErrors.confirmedArrivalDate && (
                         <p className="text-red-500 text-xs mt-1">
@@ -698,8 +734,8 @@ const CustomerInfo = () => {
                         onChange={handleChange}
                       >
                         <option value="">Select an option</option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
                       </select>
                       {validationErrors.productInStock && (
                         <p className="text-red-500 text-xs mt-1">
@@ -724,8 +760,8 @@ const CustomerInfo = () => {
                         onChange={handleChange}
                       >
                         <option value="">Select an option</option>
-                        <option value="yes">Akshay</option>
-                        <option value="no">Other</option>
+                        <option value="Yes">Akshay</option>
+                        <option value="No">Other</option>
                       </select>
                       {validationErrors.jobCompletedBy && (
                         <p className="text-red-500 text-xs mt-1">
