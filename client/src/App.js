@@ -1,12 +1,14 @@
 import "./App.css";
-import CustomerInfo from "./components/CustomerInfo";
+import FinalForm from "./components/FinalForm";
 
 function App() {
-  return (
-    <div>
-      <CustomerInfo />
-    </div>
-  );
+    return ( <
+        div >
+        <
+        FinalForm / >
+        <
+        /div>
+    );
 }
 
 export default App;

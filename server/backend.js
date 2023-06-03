@@ -142,30 +142,6 @@ app.post("/api/data", validateData, async(req, res) => {
         // Load the HTML template file
         const htmlTemplate = fs.readFileSync("../server/index.html", "utf-8");
 
-        // // Create an object to store the dynamic values
-        // const dynamicValues = {};
-
-        // // Check if returnDate has data and add it to dynamicValues
-        // if (returnDate) {
-        //     dynamicValues.returnDate = returnDate;
-        // }
-
-        // // Check if additionalInformation has data and add it to dynamicValues
-        // if (additionalInformation) {
-        //     dynamicValues.additionalInformation = additionalInformation;
-        // }
-
-        // // Check if completionNotes has data and add it to dynamicValues
-        // if (completionNotes) {
-        //     dynamicValues.completionNotes = completionNotes;
-        // }
-
-        // // Replace dynamic values in the HTML template
-        // let replacedHtml = htmlTemplate;
-        // for (const key in dynamicValues) {
-        //     replacedHtml = replacedHtml.replace(`{${key}}`, dynamicValues[key]);
-        // }
-
         // Replace dynamic values in the HTML template
         const replacedHtml = htmlTemplate
             .replace("{WorkNo}", WorkNo)
@@ -205,18 +181,9 @@ app.post("/api/data", validateData, async(req, res) => {
         // Set the HTML content of the page
         await page.setContent(replacedHtml, { waitUntil: "networkidle0" });
 
-        // Wait for a short delay to allow the page to render properly
-        // await page.waitForTimeout(1000);
-
-        // Generate the PDF with the styles
-        // const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
-
         async function delay(ms) {
             return new Promise((resolve) => setTimeout(resolve, ms));
         }
-
-        // Wait for the page to finish loading and rendering
-        // await page.waitForNavigation({ waitUntil: "networkidle0", timeout: 0 });
 
         // Wait for an additional delay to ensure the page is fully rendered
         await delay(2000);
@@ -247,7 +214,7 @@ app.post("/api/data", validateData, async(req, res) => {
 
         const mailOptions = {
             from: "akshaypanchal2023@gmail.com",
-            to: "alan19walker1997@gmail.com",
+            to: "VKhatri@centra.ca, mxu@centra.ca",
             subject: `W/O# ${WorkNo} - Return Trip Checklist`,
             text: "All fields from the form",
             attachments: [{
