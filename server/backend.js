@@ -1,3 +1,5 @@
+//Install all the required modules and packages
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -208,13 +210,14 @@ app.post("/api/data", validateData, async(req, res) => {
             service: "gmail",
             auth: {
                 user: "akshaypanchal2023@gmail.com",
-                pass: "dmpxezvksndsdaqa",
+                pass: "ednfniwetcfothfi", //new passkey generated please use this : ednfniwetcfothfi
             },
         });
 
         const mailOptions = {
             from: "akshaypanchal2023@gmail.com",
-            to: "VKhatri@centra.ca, mxu@centra.ca",
+            // to: "VKhatri@centra.ca, mxu@centra.ca", // Uncomment to send to the following mail
+            to: "akshay.panchalhp@gmail.com", //Testing purpose
             subject: `W/O# ${WorkNo} - Return Trip Checklist`,
             text: "All fields from the form",
             attachments: [{
