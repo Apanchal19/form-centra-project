@@ -216,8 +216,8 @@ app.post("/api/data", validateData, async(req, res) => {
 
         const mailOptions = {
             from: "akshaypanchal2023@gmail.com",
-            // to: "VKhatri@centra.ca, mxu@centra.ca", // Uncomment to send to the following mail
-            to: "akshay.panchalhp@gmail.com", //Testing purpose
+            to: "VKhatri@centra.ca, mxu@centra.ca", // Uncomment to send to the following mail
+            // to: "akshay.panchalhp@gmail.com", //Testing purpose
             subject: `W/O# ${WorkNo} - Return Trip Checklist`,
             text: "All fields from the form",
             attachments: [{
